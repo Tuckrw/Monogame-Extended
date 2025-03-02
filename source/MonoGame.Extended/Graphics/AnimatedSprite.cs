@@ -51,6 +51,7 @@ public class AnimatedSprite : Sprite
     {
         _animation = spriteSheet.GetAnimation(initialAnimation);
         Controller = new AnimationController(_animation);
+        TextureRegion = _spriteSheet.TextureAtlas[Controller.CurrentFrame];
     }
 
     /// <summary>
