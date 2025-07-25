@@ -23,6 +23,8 @@ namespace MonoGame.Extended.Particles;
 /// </remarks>
 public class ParticleEffect : IDisposable
 {
+    private float _nextAutoTrigger;
+
     /// <summary>
     /// Gets or sets the name of this effect, used for identification and debugging.
     /// </summary>
@@ -54,6 +56,24 @@ public class ParticleEffect : IDisposable
     /// Note that scaling is not automatically applied to emitters and must be handled by the rendering system.
     /// </remarks>
     public Vector2 Scale;
+
+    /// <summary>
+    /// A value indicating whether this particle effect should automatically trigger its particle emitters.
+    /// </summary>
+    /// <remarks>
+    /// When <see langword="true"/>, all emitters of this <see cref="ParticleEffect"/> will be triggered  at the same
+    /// based on the <see cref="AutoTriggerFrequency"/>.  When <see langword="false"/>, users will need to manually call
+    /// the <see cref="Trigger()"/> method to trigger emitters.
+    /// </remarks>
+    public bool AutoTrigger;
+
+    /// <summary>
+    /// The frequency, in seconds, at which this <see cref="ParticleEffect"/> automatically triggers emitters.
+    /// </summary>
+    /// <remarks>
+    /// If <see cref="AutoTrigger"/> is <see langword="false"/>, this value is ignored.
+    /// </remarks>
+    public float AutoTriggerFrequency;
 
     /// <summary>
     /// Gets or sets the collection of emitters that compose this effect.
@@ -97,6 +117,8 @@ public class ParticleEffect : IDisposable
         Rotation = 0.0f;
         Scale = Vector2.One;
         Emitters = new List<ParticleEmitter>();
+        AutoTrigger = true;
+        AutoTriggerFrequency = 1.0f;
     }
 
     /// <summary>
@@ -128,6 +150,13 @@ public class ParticleEffect : IDisposable
         }
     }
 
+    /// <summary>
+    /// Updates the state of all emitters in this effect.
+    /// </summary>
+    /// <param name="gameTime">The timing values for the current update cycle.</param>
+    /// <exception cref="ObjectDisposedException">
+    /// Thrown if this method is called after the effect has been disposed.
+    /// </exception>
     public void Update(GameTime gameTime)
     {
         Update((float)gameTime.ElapsedGameTime.TotalSeconds);
@@ -137,16 +166,23 @@ public class ParticleEffect : IDisposable
     /// Updates the state of all emitters in this effect.
     /// </summary>
     /// <param name="elapsedSeconds">The elapsed time, in seconds, since the last update.</param>
-    /// <remarks>
-    /// This method propagates the update call to each emitter in the effect, passing along
-    /// the elapsed time and the current position of the effect.
-    /// </remarks>
     /// <exception cref="ObjectDisposedException">
     /// Thrown if this method is called after the effect has been disposed.
     /// </exception>
     public void Update(float elapsedSeconds)
     {
         ObjectDisposedException.ThrowIf(IsDisposed, typeof(ParticleBuffer));
+
+        if (AutoTrigger)
+        {
+            _nextAutoTrigger -= elapsedSeconds;
+
+            if (_nextAutoTrigger <= 0)
+            {
+                Trigger();
+                _nextAutoTrigger += AutoTriggerFrequency;
+            }
+        }
 
         for (int i = 0; i < Emitters.Count; i++)
         {

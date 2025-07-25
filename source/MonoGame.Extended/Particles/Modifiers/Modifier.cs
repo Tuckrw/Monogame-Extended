@@ -17,8 +17,6 @@ public abstract class Modifier
 {
     private const float DEFAULT_MODIFIER_FREQUENCY = 60.0f;
 
-    private int _particlesUpdatedThisCycle;
-
     /// <summary>
     /// Gets or sets the display name of this modifier.
     /// </summary>
@@ -45,6 +43,15 @@ public abstract class Modifier
     public float Frequency;
 
     /// <summary>
+    /// Indicates whether this modifier is enabled.
+    /// </summary>
+    /// <remarks>
+    /// This value determines if this modifier is enabled.  When a modifier is disabled, the modifier is not applied
+    /// to the particles.
+    /// </remarks>
+    public bool Enabled;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Modifier"/> class.
     /// </summary>
     /// <remarks>
@@ -55,6 +62,7 @@ public abstract class Modifier
     {
         Name = GetType().Name;
         Frequency = DEFAULT_MODIFIER_FREQUENCY;
+        Enabled = true;
     }
 
     /// <summary>

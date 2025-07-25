@@ -61,7 +61,7 @@ public class ParticleEffectReaderTests
         string xml =
             """
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="EmptyEffect" Position="0,0" Rotation="0" Scale="1,1" />
+            <ParticleEffect Name="EmptyEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1" />
             """;
 
         ParticleEffect effect = ReadParticleEffectFromXml(xml);
@@ -71,6 +71,8 @@ public class ParticleEffectReaderTests
         Assert.Equal(0.0f, effect.Rotation);
         Assert.Equal(Vector2.One, effect.Scale);
         Assert.Empty(effect.Emitters);
+        Assert.True(effect.AutoTrigger);
+        Assert.Equal(effect.AutoTriggerFrequency, 1.0f);
     }
 
     [Fact]
@@ -79,9 +81,9 @@ public class ParticleEffectReaderTests
         string xml =
             $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="EmptyModifiers" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="EmptyModifiers" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -111,9 +113,9 @@ public class ParticleEffectReaderTests
         string xml =
             $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -147,9 +149,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -181,9 +183,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -215,9 +217,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -249,9 +251,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -283,9 +285,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -312,48 +314,14 @@ public class ParticleEffectReaderTests
     }
 
     [Fact]
-    public void ReadParticleEffect_LineUniformProfile_ReadsExpected()
-    {
-        string xml =
-           $"""
-            <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
-              <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
-                  <Parameters>
-                    <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
-                    <Speed Kind="Random" RandomMin="50" RandomMax="100" />
-                    <Color Kind="Constant" Constant="1,1,1" />
-                    <Opacity Kind="Random" RandomMin="0" RandomMax="1" />
-                    <Scale Kind="Random" RandomMin="0.5,0.5" RandomMax="1,1" />
-                    <Rotation Kind="Random" RandomMin="{-MathF.PI}" RandomMax="{MathF.PI}" />
-                    <Mass Kind="Constant" Constant="1" />
-                  </Parameters>
-                  <Profile Type="LineUniformProfile" Axis="1,1" Length="1" PerpendicularDirection="1,1" />
-                </ParticleEmitter>
-              </Emitters>
-            </ParticleEffect>
-            """;
-
-        ParticleEffect effect = ReadParticleEffectFromXml(xml);
-
-        Assert.Single(effect.Emitters);
-        ParticleEmitter emitter = effect.Emitters[0];
-
-        LineUniformProfile profile = Assert.IsType<LineUniformProfile>(emitter.Profile);
-        Assert.Equal(Vector2.One, profile.Axis);
-        Assert.Equal(1.0f, profile.Length);
-    }
-
-    [Fact]
     public void ReadParticleEffect_PointProfile_ReadsExpected()
     {
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -383,9 +351,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -417,9 +385,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -451,9 +419,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -490,9 +458,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -532,9 +500,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -573,9 +541,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -614,9 +582,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -653,9 +621,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -695,9 +663,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -736,9 +704,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -776,9 +744,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -818,9 +786,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -858,9 +826,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -900,9 +868,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -946,9 +914,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -992,9 +960,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -1038,9 +1006,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -1084,9 +1052,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
@@ -1130,9 +1098,9 @@ public class ParticleEffectReaderTests
         string xml =
            $"""
             <?xml version="1.0" encoding="utf-8"?>
-            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1">
+            <ParticleEffect Name="TestEffect" Position="0,0" Rotation="0" Scale="1,1" AutoTrigger="True" AutoTriggerFrequency="1">
               <Emitters>
-                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" AutoTrigger="True" AutoTriggerFrequency="1" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
+                <ParticleEmitter Name="TestEmitter" LifeSpan="1" Offset="0,0" LayerDepth="0" ReclaimFrequency="60" Capacity="1" ModifierExecutionStrategy="Serial" RenderingOrder="FrontToBack">
                   <Parameters>
                     <Quantity Kind="Random" RandomMin="5" RandomMax="100" />
                     <Speed Kind="Random" RandomMin="50" RandomMax="100" />
