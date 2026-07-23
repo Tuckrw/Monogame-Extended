@@ -1,20 +1,82 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-FX_DIR="./Graphics/Effects/Resources"
-MGFXC="dotnet mgfxc"
+set -e
 
-if [ ! -d "$FX_DIR" ]; then
-    echo "Error: Directory $FX_DIR not found."
+MANIFEST=".config/dotnet-tools.json"
+INPUT="Graphics/Effects/Resources/DefaultEffect.fx"
+OUTPUT_PREFIX="Graphics/Effects/Resources/DefaultEffect"
+
+echo "Switching dotnet-mgfxc to 3.8.5..."
+sed -i.bak \
+    's/"version": "3.8.4"/"version": "3.8.5"/' \
+    "$MANIFEST"
+rm -f "${MANIFEST}.bak"
+
+echo "Restoring .NET tools..."
+dotnet tool restore
+
+echo "Compiling MonoGame shaders..."
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.ogl.mgfxo"  /Profile:OpenGL
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.dx11.mgfxo" /Profile:DirectX_11
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.dx12.mgfxo" /Profile:DirectX_12
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.vk.mgfxo"   /Profile:Vulkan
+
+echo "Switching dotnet-mgfxc to 3.8.4 for KNI compatibility..."
+sed -i.bak \
+    's/"version": "3.8.5"/"version": "3.8.4"/' \
+    "$MANIFEST"
+rm -f "${MANIFEST}.bak"
+
+echo "Restoring .NET tools..."
+dotnet tool restore
+
+echo "Compiling KNI-compatible shaders..."
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.kni.ogl.mgfxo"  /Profile:OpenGL
+dotnet mgfxc "$INPUT" "${OUTPUT_PREFIX}.kni.dx11.mgfxo" /Profile:DirectX_11
+
+echo "Finding fxc.exe..."
+
+FXC="${FXC:-}"
+
+if [ -z "$FXC" ]; then
+    FXC="$(command -v fxc.exe 2>/dev/null || true)"
+fi
+
+if [ -z "$FXC" ]; then
+    for candidate in /c/Program\ Files\ \(x86\)/Windows\ Kits/10/bin/*/x64/fxc.exe; do
+        if [ -x "$candidate" ]; then
+            FXC="$candidate"
+            break
+        fi
+    done
+fi
+
+if [ -z "$FXC" ]; then
+    echo "Error: Could not find fxc.exe."
+    echo "Set the FXC environment variable to its full path."
     exit 1
 fi
 
-for file in "$FX_DIR"/*.fx; do
-    if [ -f "$file" ]; then
-        filename=$(basename "$file" .fx)
-        
-        $MGFXC "$FX_DIR/$filename.fx" "$FX_DIR/$filename.ogl.mgfxo" /Profile:OpenGL
-        $MGFXC "$FX_DIR/$filename.fx" "$FX_DIR/$filename.dx11.mgfxo" /Profile:DirectX_11
-    fi
-done
+echo "Compiling FNA-compatible shader..."
 
-read -p "Press enter to continue"
+if command -v cygpath >/dev/null 2>&1; then
+    WINDOWS_INPUT="$(cygpath -w "$INPUT")"
+    WINDOWS_OUTPUT="$(cygpath -w "${OUTPUT_PREFIX}.fxb")"
+else
+    WINDOWS_INPUT="$INPUT"
+    WINDOWS_OUTPUT="${OUTPUT_PREFIX}.fxb"
+fi
+
+MSYS2_ARG_CONV_EXCL="*" \
+    "$FXC" /Tfx_2_0 /Fo"$WINDOWS_OUTPUT" "$WINDOWS_INPUT"
+
+echo "Switching dotnet-mgfxc back to 3.8.5..."
+sed -i.bak \
+    's/"version": "3.8.4"/"version": "3.8.5"/' \
+    "$MANIFEST"
+rm -f "${MANIFEST}.bak"
+
+echo "Restoring .NET tools..."
+dotnet tool restore
+
+echo "Done."

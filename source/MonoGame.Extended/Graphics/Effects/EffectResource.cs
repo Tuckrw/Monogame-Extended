@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Extended.Graphics.Effects
@@ -26,75 +25,76 @@ namespace MonoGame.Extended.Graphics.Effects
     /// </remarks>
     public class EffectResource
     {
+        private static EffectResource _defaultEffectFna;
         private static EffectResource _defaultEffectDx11;
+        private static EffectResource _defaultEffectDx12;
         private static EffectResource _defaultEffectOgl;
+        private static EffectResource _defaultEffectVk;
+        private static string _detectedShaderProfile;
 
         /// <summary>
         ///     Gets the <see cref="Effects.DefaultEffect" /> embedded into the MonoGame.Extended.Graphics library.
         /// </summary>
         public static EffectResource GetDefaultEffect(GraphicsDevice graphicsDevice)
         {
+#if FNA
+            return _defaultEffectFna ??= new EffectResource("MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.fxb");
+#else
             string shaderExtension = DetermineShaderExtension(graphicsDevice);
             switch (shaderExtension)
             {
                 case "dx11":
                     return _defaultEffectDx11 ??= new EffectResource("MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.dx11.mgfxo");
+                case "dx12":
+                    return _defaultEffectDx12 ??= new EffectResource("MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.dx12.mgfxo");
                 case "ogl":
                     return _defaultEffectOgl ??= new EffectResource("MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.ogl.mgfxo");
+                case "vk":
+                    return _defaultEffectVk ??= new EffectResource("MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.vk.mgfxo");
                 default:
                     throw new InvalidOperationException($"Unsupported shader extension '{shaderExtension}'.");
             }
+#endif
         }
 
         private static string DetermineShaderExtension(GraphicsDevice graphicsDevice)
         {
             ArgumentNullException.ThrowIfNull(graphicsDevice);
 
-            // use reflection to figure out if Shader.Profile is OpenGL (0) or DirectX (1),
-            // may need to be changed / fixed for future shader profiles
-            Assembly frameworkAssembly = typeof(Game).GetTypeInfo().Assembly;
-            Debug.Assert(frameworkAssembly != null);
-
-            Type shaderType = frameworkAssembly.GetType("Microsoft.Xna.Framework.Graphics.Shader");
-            if (shaderType != null)
+            if (_detectedShaderProfile != null)
             {
-                TypeInfo shaderTypeInfo = shaderType.GetTypeInfo();
-                Debug.Assert(shaderTypeInfo != null);
+                return _detectedShaderProfile;
+            }
 
-                // https://github.com/MonoGame/MonoGame/blob/develop/MonoGame.Framework/Graphics/Shader/Shader.cs#L47
-                PropertyInfo profileProperty = shaderTypeInfo.GetDeclaredProperty("Profile");
-                if (profileProperty?.GetValue(null) is object profileValue)
+            // Perform a bytecode compatibility test.
+            // As far as I can see, this is the only AOT-compatible approach right now.
+            // TODO: We should revisit this once we have a publicly available ShaderProfile property.
+            string[] profilesToTest = ["dx12", "dx11", "ogl", "vk"];
+            foreach (string profile in profilesToTest)
+            {
+                try
                 {
-                    switch (Convert.ToInt32(profileValue))
-                    {
-                        case 0:
-                            return "ogl";
-                        case 1:
-                            return "dx11";
-                    }
+                    Debug.WriteLine($"Testing shader profile: {profile}");
+
+                    // Load the embedded resource bytecode for this profile.
+                    string resourceName = $"MonoGame.Extended.Graphics.Effects.Resources.DefaultEffect.{profile}.mgfxo";
+                    byte[] bytecode = new EffectResource(resourceName).Bytecode;
+
+                    // Attempt to create an Effect.
+                    // If the GraphicsDevice is Vulkan, and we feed it OpenGL bytecode, 
+                    // the underlying driver will throw an exception.
+                    Effect testEffect = new Effect(graphicsDevice, bytecode);
+
+                    // If we reach here, the GraphicsDevice successfully parsed the bytecode.
+                    return _detectedShaderProfile ??= profile;
                 }
-            }
-
-            if (IsOpenGlAssembly(graphicsDevice.GetType().Assembly))
-            {
-                return "ogl";
-            }
-
-            if (IsDirectXAssembly(graphicsDevice.GetType().Assembly))
-            {
-                return "dx11";
-            }
-
-            foreach (Assembly loadedAssembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (IsOpenGlAssembly(loadedAssembly))
+                catch
                 {
-                    return "ogl";
-                }
+                    // Bytecode was rejected by the current graphics backend:
+                    // Try the next possibility.
+                    Debug.WriteLine($"Shader profile was rejected: {profile}");
 
-                if (IsDirectXAssembly(loadedAssembly))
-                {
-                    return "dx11";
+                    continue;
                 }
             }
 
@@ -103,32 +103,6 @@ namespace MonoGame.Extended.Graphics.Effects
 #endif
 
             throw new InvalidOperationException("Unable to determine the shader profile for the current graphics platform.");
-        }
-
-        private static bool IsOpenGlAssembly(Assembly assembly)
-        {
-            string assemblyName = assembly.GetName().Name ?? string.Empty;
-            if (assemblyName.Contains("DesktopGL", StringComparison.OrdinalIgnoreCase) ||
-                assemblyName.Contains("SDL2.GL", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return assembly.GetType("Microsoft.Xna.Platform.Graphics.ConcreteGraphicsContextGL") != null;
-        }
-
-        private static bool IsDirectXAssembly(Assembly assembly)
-        {
-            string assemblyName = assembly.GetName().Name ?? string.Empty;
-            if (assemblyName.Contains("WindowsDX", StringComparison.OrdinalIgnoreCase) ||
-                assemblyName.Contains("DX11", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return assembly.GetType("Microsoft.Xna.Platform.Graphics.ConcreteGraphicsContextD3D") != null ||
-                   assembly.GetType("Microsoft.Xna.Platform.Graphics.ConcreteGraphicsContextDX") != null ||
-                   assembly.GetType("Microsoft.Xna.Platform.Graphics.ConcreteGraphicsContextDirectX") != null;
         }
 
         private readonly string _resourceName;
