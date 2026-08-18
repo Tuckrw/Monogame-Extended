@@ -8,6 +8,9 @@ namespace MonoGame.Extended.Tilemaps.Content;
 /// </summary>
 public sealed class TilemapReader : ContentTypeReader<Tilemap>
 {
+    internal static readonly string NativeAotRegistrationKey =
+        $"{typeof(TilemapReader).FullName}, {typeof(TilemapReader).Assembly.GetName().Name}";
+
 #if !FNA && !KNI
     /// <summary>
     /// Registers this <see cref="ContentTypeReader"/> with the <see cref="ContentTypeReaderManager"/>
@@ -19,7 +22,7 @@ public sealed class TilemapReader : ContentTypeReader<Tilemap>
     /// </remarks>
     public static void Register() =>
         ContentTypeReaderManager.AddTypeCreator(
-            typeof(TilemapReader).AssemblyQualifiedName,
+            NativeAotRegistrationKey,
             () => new TilemapReader());
 #endif
 
